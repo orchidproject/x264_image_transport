@@ -1,0 +1,7 @@
+\subsubsection usage Usage
+\verbatim
+<node name="x264Publisher" pkg="x264_image_transport" type="x264Publisher">
+  <param name="qmax" type="int" value="51" />
+</node>
+\endverbatim
+

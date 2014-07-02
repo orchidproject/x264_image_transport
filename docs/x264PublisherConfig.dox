@@ -1,0 +1,6 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~qmax" : \b [int] Maximum quantizer, less is better image quality min: 0, default: 51, max: 63
+

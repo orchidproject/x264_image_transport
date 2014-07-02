@@ -1,0 +1,15 @@
+<package>
+  <name>x264_image_transport</name>
+  <version>0.0.1</version>
+  <maintainer email="Dominic.Letourneau@USherbrooke.ca">Dominic</maintainer>
+  <license>BSD</license>
+  <description>x264</description>
+  <url>http://ros.org/wiki/x264_image_transport</url>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>image_transport"</build_depend>
+  <build_depend>pluginlib"</build_depend>
+  <build_depend>dynamic_reconfigure"</build_depend>
+
+</package>
+
+
