@@ -9,6 +9,13 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   image_transport
+  message_generation
+  dynamic_reconfigure
+)
+
+generate_dynamic_reconfigure_options(
+  cfg/x264Publisher.cfg
+  cfg/x264Subscriber.cfg
 )
 
 ## System dependencies are found with CMake's conventions
@@ -45,11 +52,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+ add_message_files(
+   FILES
+   x264Packet.msg
+ )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -66,10 +72,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs
+ )
 
 ###################################
 ## catkin specific configuration ##
@@ -81,9 +87,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES x264_image_transport
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+  INCLUDE_DIRS include
+  LIBRARIES x264_image_transport
+  CATKIN_DEPENDS roscpp message_runtime std_msgs
 #  DEPENDS system_lib
 )
 
@@ -91,29 +97,67 @@ catkin_package(
 ## Build ##
 ###########
 
+# find ffmpeg libraries
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
+find_package(FFMPEG)
+message(${FFMPEG_INCLUDE_DIR})
+message(${FFMPEG_LIBRARIES})
+
+## HACKY way to link to custom static library ffmpeg locations
+#SET(ffmpeg_prefix /home/luke/ffmpeg_build)
+#FIND_LIBRARY(avcodec PATHS ${ffmpeg_prefix}/lib NO_DEFAULT_PATH)
+#FIND_LIBRARY(swscale PATHS ${ffmpeg_prefix}/lib NO_DEFAULT_PATH)
+#FIND_LIBRARY(avformat PATHS ${ffmpeg_prefix}/lib NO_DEFAULT_PATH)
+#ADD_LIBRARY(x264 STATIC IMPORTED)
+##ADD_LIBRARY(my_avcodec SHARED  IMPORTED)
+##ADD_LIBRARY(my_swscale SHARED  IMPORTED)
+##ADD_LIBRARY(my_avformat SHARED  IMPORTED)
+#ADD_LIBRARY(my_avfilter SHARED  IMPORTED)
+##ADD_LIBRARY(my_avutil SHARED  IMPORTED)
+#SET_TARGET_PROPERTIES(x264 PROPERTIES
+#    IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libx264.a)
+##SET_TARGET_PROPERTIES(my_avcodec PROPERTIES
+#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavcodec.so)
+##SET_TARGET_PROPERTIES(my_swscale PROPERTIES
+#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libswscale.so)
+##SET_TARGET_PROPERTIES(my_avformat PROPERTIES
+#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavformat.so)
+##SET_TARGET_PROPERTIES(my_avfilter PROPERTIES
+#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavfilter.so)
+##SET_TARGET_PROPERTIES(my_avutil PROPERTIES
+#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavutil.so)
+#
+#SET(my_ffmpeg_LIBRARIES avcodec swscale avformat x264)
+
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include
+  ${FFMPEG_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a cpp library
-# add_library(x264_image_transport
-#   src/${PROJECT_NAME}/x264_image_transport.cpp
-# )
+add_library(x264_image_transport
+   src/x264_publisher.cpp
+   src/x264_subscriber.cpp
+)
 
 ## Declare a cpp executable
 add_executable(pub_node src/x264_test_publisher.cpp)
 add_executable(sub_node src/x264_test_subscriber.cpp)
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-#add_dependencies(x264_image_transport_node x264_image_transport_generate_messages_cpp)
+add_dependencies(x264_image_transport x264_image_transport_gencpp)
+add_dependencies(x264_image_transport x264_image_transport_gencfg)
+add_dependencies(pub_node x264_image_transport_gencpp)
+add_dependencies(sub_node x264_image_transport_gencpp)
 
 ## Specify libraries to link a library or executable target against
+target_link_libraries(x264_image_transport ${catkin_LIBRARIES} ${FFMPEG_LIBRARIES}) 
 target_link_libraries(pub_node ${catkin_LIBRARIES})
-target_link_libraries(sub_node ${catkin_LIBRARIES})
-
+target_link_libraries(sub_node ${catkin_LIBRARIES} ${FFMPEG_LIBRARIES})
 
 #############
 ## Install ##
@@ -130,18 +174,18 @@ target_link_libraries(sub_node ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS x264_image_transport x264_image_transport_node
+install(TARGETS x264_image_transport 
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+ )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
+ install(DIRECTORY include/${PROJECT_NAME}/
+   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+   FILES_MATCHING PATTERN "*.h"
 #   PATTERN ".svn" EXCLUDE
-# )
+ )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
