@@ -146,10 +146,10 @@ target_link_libraries(sub_node ${catkin_LIBRARIES} ${FFMPEG_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS x264_image_transport 
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+install(TARGETS x264_image_transport pub_node sub_node
+   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
 ## Mark cpp header files for installation
@@ -159,7 +159,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 # add xml file
-install(FILES x264_plugins.xml
+install(FILES x264_plugins.xml launch/test.launch
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
