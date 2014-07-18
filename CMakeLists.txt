@@ -100,38 +100,9 @@ catkin_package(
 # find ffmpeg libraries
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 find_package(FFMPEG)
-message(${FFMPEG_INCLUDE_DIR})
-message(${FFMPEG_LIBRARIES})
-
-## HACKY way to link to custom static library ffmpeg locations
-#SET(ffmpeg_prefix /home/luke/ffmpeg_build)
-#FIND_LIBRARY(avcodec PATHS ${ffmpeg_prefix}/lib NO_DEFAULT_PATH)
-#FIND_LIBRARY(swscale PATHS ${ffmpeg_prefix}/lib NO_DEFAULT_PATH)
-#FIND_LIBRARY(avformat PATHS ${ffmpeg_prefix}/lib NO_DEFAULT_PATH)
-#ADD_LIBRARY(x264 STATIC IMPORTED)
-##ADD_LIBRARY(my_avcodec SHARED  IMPORTED)
-##ADD_LIBRARY(my_swscale SHARED  IMPORTED)
-##ADD_LIBRARY(my_avformat SHARED  IMPORTED)
-#ADD_LIBRARY(my_avfilter SHARED  IMPORTED)
-##ADD_LIBRARY(my_avutil SHARED  IMPORTED)
-#SET_TARGET_PROPERTIES(x264 PROPERTIES
-#    IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libx264.a)
-##SET_TARGET_PROPERTIES(my_avcodec PROPERTIES
-#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavcodec.so)
-##SET_TARGET_PROPERTIES(my_swscale PROPERTIES
-#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libswscale.so)
-##SET_TARGET_PROPERTIES(my_avformat PROPERTIES
-#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavformat.so)
-##SET_TARGET_PROPERTIES(my_avfilter PROPERTIES
-#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavfilter.so)
-##SET_TARGET_PROPERTIES(my_avutil PROPERTIES
-#    #IMPORTED_LOCATION ${ffmpeg_prefix}/lib/libavutil.so)
-#
-#SET(my_ffmpeg_LIBRARIES avcodec swscale avformat x264)
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
 include_directories(
   include
   ${FFMPEG_INCLUDE_DIR}
