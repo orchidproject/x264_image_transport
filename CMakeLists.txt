@@ -142,6 +142,7 @@ include_directories(
 add_library(x264_image_transport
    src/x264_publisher.cpp
    src/x264_subscriber.cpp
+   src/manifest.cpp
 )
 
 ## Declare a cpp executable
@@ -181,11 +182,15 @@ install(TARGETS x264_image_transport
  )
 
 ## Mark cpp header files for installation
- install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
- )
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+)
+
+# add xml file
+install(FILES x264_plugins.xml
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES

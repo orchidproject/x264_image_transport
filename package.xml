@@ -13,8 +13,10 @@
   <build_depend>pluginlib</build_depend>
   <build_depend>dynamic_reconfigure</build_depend>
   <run_depend>message_runtime</run_depend>
+  <run_depend>image_transport</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>std_msgs</run_depend>
+  <run_depend>pluginlib</run_depend>
   <export>
     <!--<cpp lflags="-Wl,-rpath,${prefix}/lib -L/home/luke/ffmpeg_build/lib -L${prefix}/lib -lx264_image_transport -lx264 -lavcodec -lswscale -lavformat" cflags="-I${prefix}/include -I/home/luke/ffmpeg_build/include"/>-->
     <!-- <cpp lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lx264_image_transport" cflags="-I${prefix}/include"/> -->
