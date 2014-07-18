@@ -287,7 +287,10 @@ namespace x264_image_transport {
 
         //Something went wrong
         if (!initialized_)
+        {
+            ROS_WARN("x264Publisher failed to initialise!");
             return;
+        }
 
         pthread_mutex_lock (&mutex_);
 
@@ -330,6 +333,7 @@ namespace x264_image_transport {
                 packet.header = message.header;
 
 		    	//publish
+                        ROS_DEBUG("Publishing x264 packet");
 		    	publish_fn(packet);
 		    	
 		    	//Not yet used...
