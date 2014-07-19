@@ -117,19 +117,19 @@ add_library(x264_image_transport
 )
 
 ## Declare a cpp executable
-add_executable(pub_node src/x264_test_publisher.cpp)
-add_executable(sub_node src/x264_test_subscriber.cpp)
+add_executable(x264_test_publisher src/x264_test_publisher.cpp)
+add_executable(x264_test_subscriber src/x264_test_subscriber.cpp)
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 add_dependencies(x264_image_transport x264_image_transport_gencpp)
 add_dependencies(x264_image_transport x264_image_transport_gencfg)
-add_dependencies(pub_node x264_image_transport_gencpp)
-add_dependencies(sub_node x264_image_transport_gencpp)
+add_dependencies(x264_test_publisher x264_image_transport_gencpp)
+add_dependencies(x264_test_subscriber x264_image_transport_gencpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(x264_image_transport ${catkin_LIBRARIES} ${FFMPEG_LIBRARIES}) 
-target_link_libraries(pub_node ${catkin_LIBRARIES})
-target_link_libraries(sub_node ${catkin_LIBRARIES} ${FFMPEG_LIBRARIES})
+target_link_libraries(x264_test_publisher ${catkin_LIBRARIES})
+target_link_libraries(x264_test_subscriber ${catkin_LIBRARIES} ${FFMPEG_LIBRARIES})
 
 #############
 ## Install ##
@@ -146,7 +146,7 @@ target_link_libraries(sub_node ${catkin_LIBRARIES} ${FFMPEG_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS x264_image_transport pub_node sub_node
+install(TARGETS x264_image_transport x264_test_publisher x264_test_subscriber
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -158,17 +158,10 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.h"
 )
 
-# add xml file
-install(FILES x264_plugins.xml launch/test.launch
+## Mark other files for installation (e.g. launch and bag files, etc.)
+install(FILES x264_plugins.xml launch/test_x264.launch img/bulb_off.jpg img/bulb_on.jpg
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
-
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
 
 #############
 ## Testing ##

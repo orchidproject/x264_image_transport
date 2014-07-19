@@ -1,0 +1,9 @@
+<launch>
+   <node pkg="x264_image_transport" type="x264_test_publisher" name="x264_test_publisher" respawn="false" output="screen">
+    <param name="refresh_rate" value="5"/>
+    <param name="topic_name" value="/image"/>
+    <param name="image1" value="$(find pkg)/img/bulb_on.jpg"/>
+    <param name="image2" value="$(find pkg)/img/bulb_off.jpg"/>
+   </node>
+   <node pkg="image_view" type="image_view" name="viewer" args="image:=/image x264"/>
+</launch>
