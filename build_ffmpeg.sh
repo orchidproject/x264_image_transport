@@ -1,5 +1,11 @@
-mkdir -p ffmpeg_sources
+mkdir -p ~/ffmpeg_sources
 cd ~/ffmpeg_sources
+wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+tar -zxvf lame-3.99.5.tar.gz
+cd lame-3.99.5 
+PATH="$PATH:$HOME/bin" ./configure
+PATH="$PATH:$HOME/bin" make
+make install
 wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
 tar xjvf last_x264.tar.bz2
 cd x264-snapshot*
@@ -42,20 +48,19 @@ PATH="$PATH:$HOME/bin" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
   --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
   --bindir="$HOME/bin" \
   --extra-libs="-ldl" \
+  --enable-pic \
   --enable-gpl \
   --enable-libass \
   --enable-libfdk-aac \
   --enable-libfreetype \
   --enable-libmp3lame \
-  --enable-libopus \
   --enable-libtheora \
   --enable-libvorbis \
   --enable-libvpx \
   --enable-shared \
   --enable-libx264 \
   --enable-nonfree \
-  --enable-x11grab \
-  --enable-pic
+  --enable-x11grab
 PATH="$PATH:$HOME/bin" make
 make install
 make distclean
