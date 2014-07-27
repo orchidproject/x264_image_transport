@@ -13,9 +13,11 @@ Under current releases of ubuntu, system installed ffmpeg libraries are too old 
 
 2. Rebuild ffmpeg with shared libraries enabled and install them under ~/ffmpeg_build - this can be done using the included build_ffmpeg.sh script
 
-3. build the project using catkin_make
+3. Ensure that build libraries are on path by adding "export LD_LIBRARY_PATH=$HOME/ffmpeg_build/lib:$LD_LIBRARY_PATH" to the bottom of your .bashrc file.
 
-4. test by running: roslaunch x264_image_transport test_x264.launch
+4. build the project using catkin_make
+
+5. test by running: roslaunch x264_image_transport test_x264.launch
 
 Contributors
 ============
