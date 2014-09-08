@@ -250,11 +250,12 @@ namespace x264_image_transport {
         if (!initialized_)
             return;
 
-	if(message->codec != 3 && message->codec !=4){
+	if(message->codec < 0 || message->codec >= n){
 		ROS_INFO("Unsupported Codec! Can not decode!");
 		return;
 	}
-	int index = message->codec == 3 ? 1 : 0;
+
+	int index = message->codec;
 	//int index = 1;
         //decode video...
 

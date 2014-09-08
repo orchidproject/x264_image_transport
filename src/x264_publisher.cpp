@@ -333,7 +333,7 @@ namespace x264_image_transport {
 		    	memcpy(&packet.data[0],encodedPacket_.data,encodedPacket_.size);
                 //Affect header
                 packet.header = message.header;
-		packet.codec = 4;
+		packet.codec = 0;
 		    	//publish
                         ROS_INFO("Publishing x264 packet %d", packet.codec);
 		    	publish_fn(packet);

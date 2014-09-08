@@ -4,7 +4,6 @@ int32 img_width   # Image width
 int32 img_height  # Image height
 uint8 codec	  # Specifies the exact codec used by the encoder
 
-uint8 CODEC_UNKOWN = 0
-uint8 CODEC_MPEG4 = 3
-uint8 CODEC_H264 = 4
+uint8 CODEC_H264 = 0
+uint8 CODEC_MPEG4 = 1
 
