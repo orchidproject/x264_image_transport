@@ -315,7 +315,7 @@ namespace x264_image_transport {
         ret = avcodec_encode_video2(encCdcCtx_, &encodedPacket_, encFrame_, &got_output);
         //ret = avcodec_encode_video(encCdcCtx_, buffer_, height * srcstride, encFrame_);
  	ret = encodedPacket_.size;
-		ROS_INFO("OUT:%d, %d",got_output, ret);
+	//ROS_INFO("OUT:%d, %d",got_output, ret);
         if (ret > 0 && got_output > 0)
         {
                 // OK, Let's send our packets...
@@ -335,7 +335,7 @@ namespace x264_image_transport {
                 packet.header = message.header;
 		packet.codec = 0;
 		    	//publish
-                        ROS_INFO("Publishing x264 packet %d", packet.codec);
+                        //ROS_INFO("Publishing x264 packet %d", packet.codec);
 		    	publish_fn(packet);
 		    	
 		    	//Not yet used...
