@@ -187,7 +187,7 @@ namespace x264_image_transport {
         }
 
         /** allocate and AVFRame for encoder **/
-        encFrame_ = avcodec_alloc_frame();
+        encFrame_ = av_frame_alloc();
 
         if (!encFrame_)
         {
@@ -309,12 +309,14 @@ namespace x264_image_transport {
         //int got_output = 0;
         int ret = 0;
         //uint8_t buffer[height * srcstride]; //one full frame
-        
-
-        //ret = avcodec_encode_video2(encCdcCtx_, &encodedPacket_, encFrame_, &got_output);
-        ret = avcodec_encode_video(encCdcCtx_, buffer_, height * srcstride, encFrame_);
- 
-        if (ret > 0)
+        int got_output = 0;
+	//encodedPacket_.data=buffer_;
+	//encodedPacket_.size=height * srcstride;
+        ret = avcodec_encode_video2(encCdcCtx_, &encodedPacket_, encFrame_, &got_output);
+        //ret = avcodec_encode_video(encCdcCtx_, buffer_, height * srcstride, encFrame_);
+ 	ret = encodedPacket_.size;
+		ROS_INFO("OUT:%d, %d",got_output, ret);
+        if (ret > 0 && got_output > 0)
         {
                 // OK, Let's send our packets...
 		    	x264_image_transport::x264Packet packet;
@@ -325,15 +327,15 @@ namespace x264_image_transport {
 		    	//Set width & height
 		    	packet.img_width = width; 
 		    	packet.img_height = height;
-		    	
+			
 		    	//copy NAL data
-		    	memcpy(&packet.data[0],buffer_,ret);
-		    	
+		    	//memcpy(&packet.data[0],buffer_,ret);
+		    	memcpy(&packet.data[0],encodedPacket_.data,encodedPacket_.size);
                 //Affect header
                 packet.header = message.header;
-
+		packet.codec = 4;
 		    	//publish
-                        ROS_DEBUG("Publishing x264 packet");
+                        ROS_INFO("Publishing x264 packet %d", packet.codec);
 		    	publish_fn(packet);
 		    	
 		    	//Not yet used...

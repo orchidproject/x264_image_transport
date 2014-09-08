@@ -15,7 +15,18 @@ extern "C"
 }
 
 namespace x264_image_transport {
-
+	
+	struct codec_meta{		
+        	AVCodecContext  *m_pCodecCtx;
+        	AVCodec         *m_pCodec;
+		AVFrame         *m_pFrame;
+		AVFrame         *m_pFrameRGB;
+		AVPacket        m_packet;
+		SwsContext      *m_img_convert_ctx;
+		AVInputFormat   *m_inputFormat;
+		uint8_t         *m_buffer;
+	};
+	
 	class x264Subscriber : public image_transport::SimpleSubscriberPlugin<x264_image_transport::x264Packet>
 	{
 	public:
@@ -49,7 +60,8 @@ namespace x264_image_transport {
         sensor_msgs::ImagePtr latest_image_;
         bool initialized_;
 
-
+	codec_meta *codecs;
+	int n;
         AVFormatContext *m_pFormatCtx;
         AVCodecContext  *m_pCodecCtx;
         AVCodec         *m_pCodec;
@@ -60,6 +72,7 @@ namespace x264_image_transport {
         AVInputFormat* m_inputFormat;
         //AVFormatParameters m_formatParams; // deprecated type - but what's the replacement?
         uint8_t         *m_buffer;
+
 	};
 
 } //namespace x264_image_transport

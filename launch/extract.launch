@@ -1,0 +1,9 @@
+<launch>
+   <arg name="bag" default="$(env HOME)/drone.bag"/>
+   <arg name="name" default="Parrot"/>
+   <node pkg="rosbag" type="play" name="player" output="screen" args="-r 10 --clock $(arg bag)"/>
+   <node pkg="image_transport" type="republish" name="publisher" args="x264 in:=/$(arg name)/video compressed out:=/republished/image" />
+   <node name="extract" pkg="image_view" type="extract_images" respawn="false" output="screen" cwd="ROS_HOME">
+   	<remap from="image" to="/republished/image"/>
+   </node>
+</launch>
