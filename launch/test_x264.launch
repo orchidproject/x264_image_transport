@@ -5,5 +5,5 @@
     <param name="image1" value="$(find x264_image_transport)/img/bulb_on.jpg"/>
     <param name="image2" value="$(find x264_image_transport)/img/bulb_off.jpg"/>
    </node>
-   <node pkg="image_view" type="image_view" name="viewer" args="image:=/image x264"/>
+   <node pkg="rqt_image_view" type="rqt_image_view" name="viewer" args="image:=/image/x264"/>
 </launch>
